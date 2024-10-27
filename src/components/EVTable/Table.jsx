@@ -9,6 +9,7 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import TextField from "@mui/material/TextField";
 import VehicleDetailsModal from "../EVTable/VehicleDetailsCard"
+import Variants from "../Loader/Skeleton";
 
 
 const VehicleTable = ({ data }) => {
@@ -18,10 +19,14 @@ const VehicleTable = ({ data }) => {
   const [filteredData, setFilteredData] = useState([]);
   const [selectedVehicle, setSelectedVehicle] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [loading, setLoading] = React.useState(true);
 
   useEffect(() => {
     if (Array.isArray(data)) {
       setFilteredData(data);
+
+    }else{
+      setLoading(false)
     }
   }, [data]);
 
@@ -48,7 +53,13 @@ const VehicleTable = ({ data }) => {
   console.log("Check",selectedVehicle)
 
   return (
-    <div>
+   <>
+
+   {
+    loading ? (
+      <Variants/>
+    ): (
+      <div>
       <TextField
         label="Filter by Country"
         variant="outlined"
@@ -110,6 +121,9 @@ const VehicleTable = ({ data }) => {
         onClose={handleCloseModal}
       />
     </div>
+    )
+   }
+   </>
   );
 };
 
