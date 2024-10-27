@@ -22,11 +22,11 @@ const VehicleTable = ({ data }) => {
   const [loading, setLoading] = React.useState(true);
 
   useEffect(() => {
-    if (Array.isArray(data)) {
+    if (Array.isArray(data) && data.length > 0) {
       setFilteredData(data);
-
-    }else{
-      setLoading(false)
+      setLoading(false); // Set loading to false here
+    } else {
+      setLoading(true); // Keep loading true if data is not valid
     }
   }, [data]);
 
