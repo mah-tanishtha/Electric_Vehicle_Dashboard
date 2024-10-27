@@ -59,6 +59,7 @@
 
 .Ev-Table-Container{
     width: 100%;
+    padding: 15px;
 }
 
 
@@ -70,6 +71,15 @@
 .css-1wh1x6q-MuiPaper-root {
     margin:10px 0px !important;
    
+}
+
+.css-199ag83{
+    margin:0px 0px !important;
+    padding-right: 20px !important;
+}
+
+.css-2q465x{
+    padding: 10px !important;
 }
 
 @media (max-width: 592px) {
