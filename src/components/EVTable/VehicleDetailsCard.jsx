@@ -20,7 +20,7 @@ const VehicleDetailsModal = ({ vehicle, open, onClose }) => {
       </DialogTitle>
       <DialogContent dividers>
         <Typography variant="body1">
-          <strong>Country:</strong> {getValue("Country")}
+          <strong>Country:</strong> {getValue("County")}
         </Typography>
         <Typography variant="body1">
           <strong>Electric Range:</strong> {getValue("Electric Range")}
