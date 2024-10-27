@@ -1,5 +1,6 @@
 import React from "react";
 import { Chart } from "react-google-charts";
+import Variants from "../../../Loader/Skeleton";
 
 const aggregateVehicleData = (data) => {
   const makerStats = {};
@@ -39,15 +40,32 @@ export const options = {
   bubble: { textStyle: { fontSize: 11 } },
 };
 
-export function ColumnChart({data}) {
-  const chartData = aggregateVehicleData(data);
+export function ColumnChart({ data }) {
+  const [loading, setLoading] = React.useState(true); // Track loading state
+  const [chartData, setChartData] = React.useState([])
+
+  React.useEffect(() => {
+    if (data && data.length > 0) { // Check if data is not empty
+      const aggregatedData = aggregateVehicleData(data);
+      setChartData(aggregatedData);
+      setLoading(false); // Set loading to false after processing
+    }
+  
+  }, [data]);
+
   return (
-    <Chart
-      chartType="BubbleChart"
-      width="100%"
-      height="250px"
-      data={chartData}
-      options={options}
-    />
+    <>
+      {loading ? ( // Check loading state
+        <Variants /> // Show loader if loading
+      ) : (
+        <Chart
+          chartType="BubbleChart"
+          width="100%"
+          height="250px"
+          data={chartData}
+          options={options}
+        />
+      )}
+    </>
   );
 }

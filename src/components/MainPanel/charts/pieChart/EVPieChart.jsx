@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
 import { Chart } from "react-google-charts";
+import Variants from '../../../Loader/Skeleton';
 
-const EVPieChart = ({data}) => {
+const EVPieChart = ({ data }) => {
+  const [loading, setLoading] = useState(true);
+  const [aggregatedData, setAggregatedData] = useState([['Price Range', 'Count']]); // Initialize with header
 
-  //function to aggragate MSRP 
-
+  // Function to aggregate MSRP
   const aggregateMSRP = (data) => {
     const msrpCounts = {
       "Below $20,000": 0,
@@ -15,8 +17,8 @@ const EVPieChart = ({data}) => {
     };
 
     data.forEach(row => {
-      const msrp = parseFloat(row['Base MSRP']); // Ensure you replace 'MSRP' with the exact column name in your CSV
-      
+      const msrp = parseFloat(row['Base MSRP']); // Replace with the exact column name in your CSV
+
       if (!isNaN(msrp)) {
         if (msrp < 20000) {
           msrpCounts["Below $20,000"] += 1;
@@ -41,32 +43,37 @@ const EVPieChart = ({data}) => {
     return formattedData;
   };
 
-  // Aggregate the MSRP data
-  const aggregatedData = aggregateMSRP(data); // This variable holds the aggregated data
-
-   
-
-      const options = {
-        title: "Base MSRP Distribution",
-        pieHole: 0.4,
-        is3D: false,
-      };
-  return (
-    
-        <Chart
-      chartType="PieChart"
-      // width={1200}
-      // height="100%"
-      data={aggregatedData}
-      options={options}
-    />
+  // Use effect to process data and set loading state
+  useEffect(() => {
+    if (data && data.length > 0) {
+      const aggregated = aggregateMSRP(data);
+      setAggregatedData(aggregated); // Update aggregated data
+      setLoading(false); // Set loading to false after data processing
+    } else {
       
-    
-  )
+      setLoading(false); 
+    }
+  }, [data]);
+
+  const options = {
+    title: "Base MSRP Distribution",
+    pieHole: 0.4,
+    is3D: false,
+  };
+
+  return (
+    <>
+      {loading ? ( 
+        <Variants /> 
+      ) : (
+        <Chart
+          chartType="PieChart"
+          data={aggregatedData}
+          options={options}
+        />
+      )}
+    </>
+  );
 }
 
-export default EVPieChart
-
-
-
-
+export default EVPieChart;

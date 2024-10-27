@@ -1,49 +1,68 @@
 import * as React from 'react';
 import { BarChart } from '@mui/x-charts/BarChart';
+import Variants from '../../../Loader/Skeleton';
 
 export default function CityChart({ data }) {
-  const [aggregatedData, setAggregatedData] = React.useState([]);
+    const [aggregatedData, setAggregatedData] = React.useState([]);
+    const [loading, setLoading] = React.useState(true);
 
-  React.useEffect(() => {
-    if (data) {
-      aggregateVehicleData(data);
-    }
-  }, [data]);
+    React.useEffect(() => {
+        if (data) {
+            aggregateVehicleData(data);
+        } else {
+            setLoading(false)
+        }
+    }, [data]);
 
-  // Aggregate vehicle counts by city
-  const aggregateVehicleData = (data) => {
-    const vehicleCounts = {};
-    console.log("Data2", data);
+    // Aggregate vehicle counts by city
+    const aggregateVehicleData = (data) => {
+        const vehicleCounts = {};
+        console.log("Data2", data);
 
-    data.forEach((row) => {
-      const city = row['City']; // Adjusted key to use 'City'
-      if (city) {
-        vehicleCounts[city] = (vehicleCounts[city] || 0) + 1;
-      }
-    });
+        setLoading(true);
 
-    const formattedData = Object.keys(vehicleCounts).map((city) => ({
-      label: city,
-      value: vehicleCounts[city],
-    }));
+        data.forEach((row) => {
+            const city = row['City']; // Adjusted key to use 'City'
+            if (city) {
+                vehicleCounts[city] = (vehicleCounts[city] || 0) + 1;
+            }
+        });
 
-    setAggregatedData(formattedData);
-  };
+        const formattedData = Object.keys(vehicleCounts).map((city) => ({
+            label: city,
+            value: vehicleCounts[city],
+        }));
 
-  // Prepare data for the BarChart
-  const xLabels = aggregatedData.map(item => item.label);
-  const values = aggregatedData.map(item => item.value);
+        setAggregatedData(formattedData);
+        setLoading(false);
+    };
 
-  return (
-    <BarChart
-    //   maxWidth="300px"
-    //   maxHeight="300px"
-    height={300}
-    // width={"1200"}
-      series={[{ data: values, label: 'Vehicle Count', id: 'vehicleCountId' }]}
-      xAxis={[{ data: xLabels, scaleType: 'band', label: 'City' }]} // Changed label to 'City'
-    //   yAxis={[{ label: 'Number of Vehicles' }]}
-      tooltip={{ enabled: true }}
-    />
-  );
+    // Prepare data for the BarChart
+    const xLabels = aggregatedData.map(item => item.label);
+    const values = aggregatedData.map(item => item.value);
+
+    return (
+        <>
+
+            {loading || aggregatedData.length === 0 ?
+                (
+                    <Variants />
+                )
+                :
+                (
+
+                    <BarChart
+                        //   maxWidth="300px"
+                        //   maxHeight="300px"
+                        height={300}
+                        // width={"1200"}
+                        series={[{ data: values, label: 'Vehicle Count', id: 'vehicleCountId' }]}
+                        xAxis={[{ data: xLabels, scaleType: 'band', label: 'City' }]} // Changed label to 'City'
+                        //   yAxis={[{ label: 'Number of Vehicles' }]}
+                        tooltip={{ enabled: true }}
+                    />)
+            }
+        </>
+
+    );
 }

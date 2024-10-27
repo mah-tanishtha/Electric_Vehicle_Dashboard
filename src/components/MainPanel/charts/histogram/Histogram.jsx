@@ -1,15 +1,23 @@
-import React ,{useState,useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import { Chart } from "react-google-charts";
+import Variants from '../../../Loader/Skeleton';
 
 
-const Histogram = ({data}) => {
+const Histogram = ({ data }) => {
 
   const [chartData, setChartData] = useState([["Model Year", "Count"]]); // Initial data format for the chart
+  const [loading, setLoading] = useState(true); // Loading state
+
+
 
   useEffect(() => {
-    if (data) {
+    if (data && data.length > 0) {
       aggregateModelYearData(data);
+    } else {
+      console.log("No data available"); // Log if no data
+      setLoading(false); // Set loading to false if there's no data
     }
+
   }, [data]);
 
   const aggregateModelYearData = (vehicleData) => {
@@ -31,29 +39,36 @@ const Histogram = ({data}) => {
     }
 
     setChartData(newChartData);
+    setLoading(false);
   };
 
-    const options = {
-        title: " Sales of EV",
-        chartArea: { width: "50%" },
-        hAxis: {
-          title: "Total Sales",
-          minValue: 0,
-        },
-        vAxis: {
-          title: "Model Year",
-        },}
+  const options = {
+    title: " Sales of EV",
+    chartArea: { width: "50%" },
+    hAxis: {
+      title: "Total Sales",
+      minValue: 0,
+    },
+    vAxis: {
+      title: "Model Year",
+      format:'string'
+    },
+  }
 
   return (
     <div>
-       <Chart
-      chartType="BarChart"
-      width="100%"
-      height="250px"
-      data={chartData}
-      options={options}
-      legendToggle
-    />
+      {loading ? ( 
+        <Variants />
+      ) : (
+        <Chart
+          chartType="BarChart"
+          width="100%"
+          height="250px"
+          data={chartData}
+          options={options}
+          legendToggle
+        />
+      )}
     </div>
   )
 }
