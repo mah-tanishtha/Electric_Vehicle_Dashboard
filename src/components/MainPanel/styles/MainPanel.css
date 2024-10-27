@@ -1,0 +1,79 @@
+.mainpanel-container{
+    background-color: whitesmoke;
+}
+
+.dash-heading{
+    margin: 0;
+    font-weight: 800;
+    color: rgba(27, 22, 22, 0.388);
+}
+
+.card-container{
+    display: flex;
+    flex:1 1;   
+}
+
+/* .location-container{
+    width: 100%;
+    display: flex;
+} */
+
+.country-container{
+    margin:16px 0px;
+    width: 100%;
+}
+
+.map-container{
+    width: 100%;
+    margin:  16px 0px;
+
+}
+
+
+
+.EVType-container{
+    width: 100%;
+    margin:16px 0px;
+    border-radius: 10px 10px;
+}
+
+.BaseMSVP-container{
+    width: 100%;
+    margin:16px 0px;
+    border-radius: 10px 10px;
+}
+
+
+
+.Line-container{
+    width: 100%;
+    margin:16px 0px;
+    border-radius: 10px 10px;
+}
+
+.Electric-range-chart{
+    width: 100%;
+    margin:16px 0px;
+    border-radius: 10px 10px;
+}
+
+.Ev-Table-Container{
+    width: 100%;
+}
+
+
+.table-paper{
+    margin: 0px;
+    padding: 0px;
+}
+
+.css-1wh1x6q-MuiPaper-root {
+    margin:10px 0px !important;
+   
+}
+
+@media (max-width: 592px) {
+    .card-container{
+        flex-direction: column;
+    }
+  }
